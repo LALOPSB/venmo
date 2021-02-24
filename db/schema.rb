@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210224152143) do
+ActiveRecord::Schema.define(version: 20210224155557) do
 
   create_table "external_payment_sources", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -33,6 +33,14 @@ ActiveRecord::Schema.define(version: 20210224152143) do
 
   add_index "feed_items", ["friend_id"], name: "index_feed_items_on_friend_id"
   add_index "feed_items", ["sender_id"], name: "index_feed_items_on_sender_id"
+
+  create_table "friendships", force: :cascade do |t|
+    t.integer "user_id",   null: false
+    t.integer "friend_id", null: false
+  end
+
+  add_index "friendships", ["friend_id"], name: "index_friendships_on_friend_id"
+  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id"
 
   create_table "payment_accounts", force: :cascade do |t|
     t.integer  "user_id",                null: false
