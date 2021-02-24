@@ -11,14 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210224053901) do
+ActiveRecord::Schema.define(version: 20210224152143) do
 
   create_table "external_payment_sources", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string  "type",    null: false
+    t.integer  "user_id",    null: false
+    t.string   "type",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "external_payment_sources", ["user_id"], name: "index_external_payment_sources_on_user_id"
+
+  create_table "feed_items", force: :cascade do |t|
+    t.integer  "sender_id",   null: false
+    t.integer  "friend_id",   null: false
+    t.integer  "amount",      null: false
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "feed_items", ["friend_id"], name: "index_feed_items_on_friend_id"
+  add_index "feed_items", ["sender_id"], name: "index_feed_items_on_sender_id"
 
   create_table "payment_accounts", force: :cascade do |t|
     t.integer  "user_id",                null: false

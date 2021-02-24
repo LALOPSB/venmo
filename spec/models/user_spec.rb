@@ -14,6 +14,7 @@ RSpec.describe User do
   end
 
   describe 'payments' do
+    let(:payment_description) { 'This is a payment' }
     let!(:user) { FactoryBot.create(:user) }
     let!(:friend) { FactoryBot.create(:user) }
     let(:user_original_balance) { 100 }
@@ -21,7 +22,18 @@ RSpec.describe User do
     let!(:user_payment_account) { FactoryBot.create(:payment_account, balance: user_original_balance, user: user) }
     let!(:friend_payment_account) { FactoryBot.create(:payment_account, balance: friend_original_balance, user: friend) }
 
-    subject{ user.send_payment(friend, payment_amount) }
+    subject{ user.send_payment(friend, payment_amount, payment_description) }
+
+    shared_examples 'creates an item feed' do
+      it 'a feed item is created' do
+        expect{subject}.to change{FeedItem.count}.from(0).to(1)
+
+        expect(FeedItem.first.sender).to eq(user)
+        expect(FeedItem.first.friend).to eq(friend)
+        expect(FeedItem.first.amount).to eq(payment_amount)
+        expect(FeedItem.first.description).to eq(payment_description)
+      end
+    end
 
     context 'positive balance' do
       context 'when a user pays an amount lower than the balance' do
@@ -33,6 +45,8 @@ RSpec.describe User do
           expect(user_payment_account.balance).to eq(user_original_balance - payment_amount)
           expect(friend_payment_account.balance).to eq(friend_original_balance + payment_amount)
         end
+
+        it_behaves_like 'creates an item feed'
       end
     end
 
@@ -50,6 +64,8 @@ RSpec.describe User do
           expect(user_payment_account.balance).to eq(0)
           expect(friend_payment_account.balance).to eq(friend_original_balance + payment_amount)
         end
+
+        it_behaves_like 'creates an item feed'
       end
     end
   end

@@ -7,10 +7,12 @@ class User < ActiveRecord::Base
 
   attr_reader :money_transfer_service
 
-  def send_payment(friend, payment_amount)
-    PaymentAccount.transaction do
+  def send_payment(friend, payment_amount, description)
+    ActiveRecord::Base.transaction do
       payment_account.withdraw(payment_amount)
       friend.payment_account.deposit(payment_amount)
+
+      FeedItem.create!(friend: friend, sender: self, amount: payment_amount, description: description)
     end
   end
 
