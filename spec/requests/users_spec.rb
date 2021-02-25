@@ -63,13 +63,24 @@ RSpec.describe 'users endpoints', type: :request do
   end
 
   describe 'GET feed' do
+    include_context 'activity feed'
+
     subject(:get_feed) { get "/user/#{user.id}/feed" }
+
+    let(:expected_user_activity_feed) do
+      [
+        "#{friend_1.username} paid #{friend_2.username} on #{pay_between_friends.created_at} - $15 - Payment between friends",
+        "#{non_friend_1.username} paid #{friend_2.username} on #{pay_non_to_friend.created_at} - $55 - Payment from non friend to friend",
+        "#{friend_1.username} paid #{user.username} on #{pay_from_friend.created_at} - $108 - Payment from friend",
+        "#{user.username} paid #{friend_1.username} on #{pay_to_friend.created_at} - $80 - Payment to friend"
+      ]
+    end
 
     it 'returns a successful response and sends payment' do
       get_feed
 
       expect(response.status).to eq(200)
-      expect(json_body).to eq({})
+      expect(json_body).to eq({ activity_feed: expected_user_activity_feed })
     end
   end
 end

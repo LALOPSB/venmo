@@ -15,9 +15,9 @@ class UsersController < ApplicationController
   end
 
   def feed
-    feed_items = UserFeedPayload.new(User.find(params[:id])).execute
+    feed_items = UserFeedBuilder.new(User.find(params[:id])).execute
 
-    render json: feed_items, status: 200
+    render json: { activity_feed: feed_items }, status: 200
   end
 
   private
