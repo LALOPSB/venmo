@@ -8,6 +8,12 @@ class UsersController < ApplicationController
     render json: { error: e.message }, status: 400
   end
 
+  def balance
+    balance = User.find(params[:id]).payment_account.balance
+
+    render json: { balance_check: balance }
+  end
+
   private
 
   def user_params

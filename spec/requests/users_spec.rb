@@ -9,7 +9,7 @@ RSpec.describe 'users endpoints', type: :request do
   let!(:user_account) { FactoryBot.create(:payment_account, balance: 130, user: user) }
   let!(:friend_account) { FactoryBot.create(:payment_account, balance: 180, user: friend) }
 
-  describe 'send_payment' do
+  describe 'POST payment' do
     subject(:send_payment) { post "/user/#{user.id}/payment?friend_id=#{friend.id}&amount=#{amount}&description=#{description}" }
 
     context 'when a user sends a payment' do
@@ -48,6 +48,17 @@ RSpec.describe 'users endpoints', type: :request do
           expect(json_body).to eq({ error: 'You can make payments only to befriended users' })
         end
       end
+    end
+  end
+
+  describe 'GET balance' do
+    subject(:get_balance_check) { get "/user/#{user.id}/balance" }
+
+    it 'returns a successful response and sends payment' do
+      get_balance_check
+
+      expect(response.status).to eq(200)
+      expect(json_body).to eq({ balance_check: 130 })
     end
   end
 end
