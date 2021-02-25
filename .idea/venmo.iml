@@ -92,6 +92,7 @@
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.1.0, RVM: ruby-2.4.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thread_safe (v0.3.6, RVM: ruby-2.4.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tilt (v2.0.10, RVM: ruby-2.4.5) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="timecop (v0.9.4, RVM: ruby-2.4.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="turbolinks (v5.2.1, RVM: ruby-2.4.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="turbolinks-source (v5.2.0, RVM: ruby-2.4.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tzinfo (v1.2.9, RVM: ruby-2.4.5) [gem]" level="application" />
@@ -351,7 +352,9 @@
           <RakeTaskImpl description="Run all specs in spec directory (excluding plugin specs)" fullCommand="spec" id="spec" />
           <RakeTaskImpl id="spec">
             <subtasks>
+              <RakeTaskImpl description="Run the code examples in spec/lib" fullCommand="spec:lib" id="lib" />
               <RakeTaskImpl description="Run the code examples in spec/models" fullCommand="spec:models" id="models" />
+              <RakeTaskImpl description="Run the code examples in spec/requests" fullCommand="spec:requests" id="requests" />
               <RakeTaskImpl description="" fullCommand="spec:prepare" id="prepare" />
               <RakeTaskImpl description="" fullCommand="spec:statsetup" id="statsetup" />
             </subtasks>

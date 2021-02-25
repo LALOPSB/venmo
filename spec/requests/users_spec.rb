@@ -61,4 +61,15 @@ RSpec.describe 'users endpoints', type: :request do
       expect(json_body).to eq({ balance_check: 130 })
     end
   end
+
+  describe 'GET feed' do
+    subject(:get_feed) { get "/user/#{user.id}/feed" }
+
+    it 'returns a successful response and sends payment' do
+      get_feed
+
+      expect(response.status).to eq(200)
+      expect(json_body).to eq({})
+    end
+  end
 end

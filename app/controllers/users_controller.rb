@@ -11,7 +11,13 @@ class UsersController < ApplicationController
   def balance
     balance = User.find(params[:id]).payment_account.balance
 
-    render json: { balance_check: balance }
+    render json: { balance_check: balance }, status: 200
+  end
+
+  def feed
+    feed_items = UserFeedPayload.new(User.find(params[:id])).execute
+
+    render json: feed_items, status: 200
   end
 
   private

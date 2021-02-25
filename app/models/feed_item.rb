@@ -5,4 +5,6 @@ class FeedItem < ActiveRecord::Base
 
   belongs_to :friend, class_name: 'User', foreign_key: :friend_id
   belongs_to :sender, class_name: 'User', foreign_key: :sender_id
+
+  scope :order_by_created_desc, -> { order(created_at: :desc) }
 end
