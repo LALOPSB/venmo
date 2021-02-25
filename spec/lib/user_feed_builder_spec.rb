@@ -18,16 +18,36 @@ RSpec.describe UserFeedBuilder do
   describe '#execute' do
     let(:expected_user_activity_feed) do
       [
-        "#{friend_1.username} paid #{friend_2.username} on #{pay_between_friends.created_at} - $15 - Payment between friends",
-        "#{non_friend_1.username} paid #{friend_2.username} on #{pay_non_to_friend.created_at} - $55 - Payment from non friend to friend",
-        "#{friend_1.username} paid #{user.username} on #{pay_from_friend.created_at} - $108 - Payment from friend",
-        "#{user.username} paid #{friend_1.username} on #{pay_to_friend.created_at} - $80 - Payment to friend"
+        pay_between_friends_title_and_desc,
+        pay_non_to_friend_title_and_desc,
+        pay_from_friend_title_and_desc,
+        pay_to_friend_title_and_desc
       ]
     end
     let(:user_feed_builder) { described_class.new(user) }
 
     it 'returns the activity feed formatted and in reverse chonological order' do
       expect(user_feed_builder.execute).to eq(expected_user_activity_feed)
+    end
+
+    describe 'pagination' do
+      before { stub_const("UserFeedBuilder::DEFAULT_PER_PAGE_ITEMS", 3) }
+
+      let(:user_feed_builder) { described_class.new(user, 2) }
+
+      let(:expected_user_activity_feed_page_1) do
+        [
+          pay_between_friends_title_and_desc,
+          pay_non_to_friend_title_and_desc,
+          pay_from_friend_title_and_desc
+        ]
+      end
+      let(:expected_user_activity_feed_page_2) { [pay_to_friend_title_and_desc] }
+
+      it 'returns items paginated' do
+        expect(described_class.new(user, 1).execute).to eq(expected_user_activity_feed_page_1)
+        expect(described_class.new(user, 2).execute).to eq(expected_user_activity_feed_page_2)
+      end
     end
   end
 end

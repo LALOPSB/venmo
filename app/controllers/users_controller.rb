@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   end
 
   def feed
-    feed_items = UserFeedBuilder.new(User.find(params[:id])).execute
+    feed_items = UserFeedBuilder.new(User.find(params[:id]), user_params[:page]).execute
 
     render json: { activity_feed: feed_items }, status: 200
   end
@@ -23,6 +23,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:friend_id, :amount, :description)
+    params.permit(:friend_id, :amount, :description, :page)
   end
 end
