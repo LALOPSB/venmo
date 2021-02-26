@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210226193539) do
+ActiveRecord::Schema.define(version: 20210226220150) do
 
   create_table "external_payment_sources", force: :cascade do |t|
     t.integer  "user_id",     null: false
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20210226193539) do
   create_table "payments", force: :cascade do |t|
     t.integer  "sender_id",   null: false
     t.integer  "friend_id",   null: false
-    t.integer  "amount",      null: false
+    t.float    "amount",      null: false
     t.string   "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false

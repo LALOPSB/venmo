@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   def payment
     friend = User.find(user_params[:friend_id])
-    user.send_payment(friend, user_params[:amount].to_i, user_params[:description])
+    user.send_payment(friend, user_params[:amount].to_f, user_params[:description])
 
     render json: {}, status: 200
   rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound => e

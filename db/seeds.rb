@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 (1..50).each do
-  User.create!(username: Faker::Internet.username)
+  User.create!(username: Faker::Name.first_name)
 end
 
 (1..50).each do |user_id|
@@ -24,7 +24,9 @@ end
   )
 end
 
-(1..50).each do |user_id|
+Friendship.create!(user_id: 1, friend_id: 50)
+
+(2..50).each do |user_id|
   friend_ids = ([*1..50] - [user_id]).sample(rand(1..3))
   friend_ids.each do |friend_id|
     Friendship.create!(
@@ -43,11 +45,14 @@ User.all.each do |user|
         friend: friend,
         amount: rand(0.0..150.0).round(2),
         description: Faker::Lorem.sentence,
-        created_at: rand(10080).minutes.ago
+        created_at: rand(20160).minutes.ago
       )
     end
   end
 end
+
+User.create!(username: 'non-friend')
+
 
 
 
