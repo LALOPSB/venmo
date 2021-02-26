@@ -17,7 +17,7 @@ class UserFeedBuilder
 
   def feed_items_for_user_and_friends
     user_ids = get_all_users_for_activity_feed.map(&:id)
-    FeedItem.where('sender_id IN (?) OR friend_id IN (?)', user_ids, user_ids).order_by_created_desc.page(page).per_page(DEFAULT_PER_PAGE_ITEMS)
+    Payment.where('sender_id IN (?) OR friend_id IN (?)', user_ids, user_ids).order_by_created_desc.page(page).per_page(DEFAULT_PER_PAGE_ITEMS)
   end
 
   def get_all_users_for_activity_feed

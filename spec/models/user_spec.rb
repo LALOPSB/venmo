@@ -20,6 +20,7 @@ RSpec.describe User do
     let(:user_original_balance) { 100 }
     let(:friend_original_balance) { 0 }
     let(:payment_amount) { 10 }
+    let!(:external_payment_source) { FactoryBot.create(:external_payment_source, user: user) }
     let!(:user_payment_account) { FactoryBot.create(:payment_account, balance: user_original_balance, user: user) }
     let!(:friend_payment_account) { FactoryBot.create(:payment_account, balance: friend_original_balance, user: friend) }
 
@@ -28,14 +29,14 @@ RSpec.describe User do
     context 'when the user make a payment to a friend' do
       before { Friendship.create!(user: user, friend: friend) }
 
-      shared_examples 'creates an item feed' do
-        it 'a feed item is created' do
-          expect { subject }.to change { FeedItem.count }.from(0).to(1)
+      shared_examples 'creates a payment' do
+        it 'a payment is created' do
+          expect { subject }.to change { Payment.count }.from(0).to(1)
 
-          expect(FeedItem.first.sender).to eq(user)
-          expect(FeedItem.first.friend).to eq(friend)
-          expect(FeedItem.first.amount).to eq(payment_amount)
-          expect(FeedItem.first.description).to eq(payment_description)
+          expect(Payment.first.sender).to eq(user)
+          expect(Payment.first.friend).to eq(friend)
+          expect(Payment.first.amount).to eq(payment_amount)
+          expect(Payment.first.description).to eq(payment_description)
         end
       end
 
@@ -48,13 +49,14 @@ RSpec.describe User do
             expect(friend_payment_account.balance).to eq(friend_original_balance + payment_amount)
           end
 
-          it_behaves_like 'creates an item feed'
+          it_behaves_like 'creates a payment'
         end
       end
 
       context 'negative balance' do
+        let(:payment_amount) { 200 }
+
         context 'when a user sends an amount larger than its balance' do
-          let(:payment_amount) { 200 }
 
           before { allow(user.money_transfer_service).to receive(:transfer).and_call_original }
 
@@ -67,7 +69,15 @@ RSpec.describe User do
             expect(friend_payment_account.balance).to eq(friend_original_balance + payment_amount)
           end
 
-          it_behaves_like 'creates an item feed'
+          it_behaves_like 'creates a payment'
+        end
+
+        context 'when the external service fails' do
+          before { allow(user.money_transfer_service.external_payment_source).to receive(:send_money).and_raise(Timeout::Error) }
+
+          it 'raises the appropriate error' do
+            expect{ subject }.to raise_error(MoneyTransferService::ExternalPaymentServiceError,"The transfer couldn't be completed. Please, try again later.")
+          end
         end
       end
 
@@ -75,14 +85,14 @@ RSpec.describe User do
         context 'if the payment is lower than mimimum bound' do
           let(:payment_amount) { -1 }
           it 'raises an error' do
-            expect { subject }.to raise_error(User::PaymentAmountOutOfBounds, "Payment amount should be between #{User::MINIMUM_PAYMENT_AMOUNT} and #{User::MAXIMUM_PAYMENT_AMOUNT}")
+            expect { subject }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Amount must be greater than #{Payment::MINIMUM_PAYMENT_AMOUNT}")
           end
         end
 
         context 'if the payment is higher than maximum bound' do
           let(:payment_amount) { 1001 }
           it 'raises an error' do
-            expect { subject }.to raise_error(User::PaymentAmountOutOfBounds, "Payment amount should be between #{User::MINIMUM_PAYMENT_AMOUNT} and #{User::MAXIMUM_PAYMENT_AMOUNT}")
+            expect { subject }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Amount must be less than #{Payment::MAXIMUM_PAYMENT_AMOUNT}")
           end
         end
       end
@@ -90,7 +100,7 @@ RSpec.describe User do
 
     context 'when the user tries to pay a non friend' do
       it 'raises an error' do
-        expect { subject }.to raise_error(User::NonFriendPaymentAttempt, 'You can make payments only to befriended users')
+        expect { subject }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: #{user.username} you can make payments only to friends.")
       end
     end
   end

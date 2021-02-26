@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe FeedItem do
-  subject{ FactoryBot.build(:feed_item) }
+RSpec.describe Payment do
+  subject{ FactoryBot.build(:payment) }
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:sender_id) }

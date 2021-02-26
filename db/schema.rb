@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210224155557) do
+ActiveRecord::Schema.define(version: 20210226193539) do
 
   create_table "external_payment_sources", force: :cascade do |t|
     t.integer  "user_id",     null: false
@@ -21,18 +21,6 @@ ActiveRecord::Schema.define(version: 20210224155557) do
   end
 
   add_index "external_payment_sources", ["user_id"], name: "index_external_payment_sources_on_user_id"
-
-  create_table "feed_items", force: :cascade do |t|
-    t.integer  "sender_id",   null: false
-    t.integer  "friend_id",   null: false
-    t.integer  "amount",      null: false
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "feed_items", ["friend_id"], name: "index_feed_items_on_friend_id"
-  add_index "feed_items", ["sender_id"], name: "index_feed_items_on_sender_id"
 
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id",   null: false
@@ -50,6 +38,18 @@ ActiveRecord::Schema.define(version: 20210224155557) do
   end
 
   add_index "payment_accounts", ["user_id"], name: "index_payment_accounts_on_user_id"
+
+  create_table "payments", force: :cascade do |t|
+    t.integer  "sender_id",   null: false
+    t.integer  "friend_id",   null: false
+    t.integer  "amount",      null: false
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "payments", ["friend_id"], name: "index_payments_on_friend_id"
+  add_index "payments", ["sender_id"], name: "index_payments_on_sender_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "username",   null: false

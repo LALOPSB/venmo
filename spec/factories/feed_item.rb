@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :feed_item do
+  factory :payment do
     amount { Faker::Number.number(digits: 3) }
     description { Faker::Lorem.sentence }
 

@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     user.send_payment(friend, user_params[:amount].to_i, user_params[:description])
 
     render json: {}, status: 200
-  rescue User::PaymentAmountOutOfBounds, User::NonFriendPaymentAttempt, ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: 400
   end
 

@@ -1,7 +1,10 @@
 class ExternalPaymentSource < ActiveRecord::Base
-  validates_presence_of :user
-  validates_presence_of :source_type
-  validates_uniqueness_of :user
+  validates :user, :source_type, presence: true
+  validates :user, uniqueness: true
 
   belongs_to :user
+
+  def send_money(amount)
+    true
+  end
 end

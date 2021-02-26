@@ -48,7 +48,7 @@ RSpec.describe 'users endpoints', type: :request do
               send_payment
 
               expect(response.status).to eq(400)
-              expect(json_body).to eq({ error: 'Payment amount should be between 0.0 and 1000.0' })
+              expect(json_body).to eq({ error: 'Validation failed: Amount must be less than 1000.0' })
             end
           end
         end
@@ -58,7 +58,7 @@ RSpec.describe 'users endpoints', type: :request do
             send_payment
 
             expect(response.status).to eq(400)
-            expect(json_body).to eq({ error: 'You can make payments only to befriended users' })
+            expect(json_body).to eq({ error: "Validation failed: #{user.username} you can make payments only to friends." })
           end
         end
       end

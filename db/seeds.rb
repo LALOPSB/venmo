@@ -38,7 +38,7 @@ end
 User.all.each do |user|
   user.friends.each do |friend|
     (1..3).each do
-      FeedItem.create!(
+      Payment.create!(
         sender: user,
         friend: friend,
         amount: rand(0.0..150.0).round(2),
