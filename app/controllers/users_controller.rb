@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :find_user
 
   def payment
@@ -6,7 +7,7 @@ class UsersController < ApplicationController
     user.send_payment(friend, user_params[:amount].to_i, user_params[:description])
 
     render json: {}, status: 200
-  rescue User::PaymentAmountOutOfBounds, User::NonFriendPaymentAttempt, ActiveRecordError => e
+  rescue User::PaymentAmountOutOfBounds, User::NonFriendPaymentAttempt, ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: 400
   end
 

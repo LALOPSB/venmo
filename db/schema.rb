@@ -14,10 +14,10 @@
 ActiveRecord::Schema.define(version: 20210224155557) do
 
   create_table "external_payment_sources", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.string   "type",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "user_id",     null: false
+    t.string   "source_type", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "external_payment_sources", ["user_id"], name: "index_external_payment_sources_on_user_id"
@@ -43,10 +43,10 @@ ActiveRecord::Schema.define(version: 20210224155557) do
   add_index "friendships", ["user_id"], name: "index_friendships_on_user_id"
 
   create_table "payment_accounts", force: :cascade do |t|
-    t.integer  "user_id",                null: false
+    t.integer  "user_id",                  null: false
     t.float    "balance",    default: 0.0, null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "payment_accounts", ["user_id"], name: "index_payment_accounts_on_user_id"

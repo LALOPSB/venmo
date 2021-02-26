@@ -48,7 +48,7 @@ RSpec.describe 'users endpoints', type: :request do
               send_payment
 
               expect(response.status).to eq(400)
-              expect(json_body).to eq({ error: 'Payment amount should be between 0 and 1000' })
+              expect(json_body).to eq({ error: 'Payment amount should be between 0.0 and 1000.0' })
             end
           end
         end

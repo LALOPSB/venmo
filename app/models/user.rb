@@ -12,8 +12,8 @@ class User < ActiveRecord::Base
 
   attr_reader :money_transfer_service
 
-  MINIMUM_PAYMENT_AMOUNT = 0
-  MAXIMUM_PAYMENT_AMOUNT = 1000
+  MINIMUM_PAYMENT_AMOUNT = 0.00
+  MAXIMUM_PAYMENT_AMOUNT = 1000.00
 
   NonFriendPaymentAttempt = Class.new(StandardError)
   PaymentAmountOutOfBounds = Class.new(StandardError)

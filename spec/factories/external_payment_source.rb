@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :external_payment_source do
-    type { 'bank_account' }
+    source_type { 'Bank Account' }
 
     association :user, factory: :user
   end
