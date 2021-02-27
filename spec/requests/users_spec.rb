@@ -86,10 +86,10 @@ RSpec.describe 'users endpoints', type: :request do
 
     let(:expected_user_activity_feed) do
       [
-        pay_between_friends_title_and_desc,
-        pay_non_to_friend_title_and_desc,
-        pay_from_friend_title_and_desc,
-        pay_to_friend_title_and_desc
+        pay_between_friends_feed_item,
+        pay_non_to_friend_feed_item,
+        pay_from_friend_feed_item,
+        pay_to_friend_feed_item
       ]
     end
 
@@ -97,19 +97,19 @@ RSpec.describe 'users endpoints', type: :request do
       get_feed
 
       expect(response.status).to eq(200)
-      expect(json_body).to eq({ activity_feed: expected_user_activity_feed })
+      expect(JSON.parse(response.body).each(&:deep_symbolize_keys!)).to eq(expected_user_activity_feed)
     end
 
     context 'pagination' do
       before { stub_const("#{UserFeedBuilder}::DEFAULT_PER_PAGE_ITEMS", 3) }
 
-      let(:expected_user_activity_feed_page_2) { [pay_to_friend_title_and_desc] }
+      let(:expected_user_activity_feed_page_2) { [pay_to_friend_feed_item] }
       let(:page) { 2 }
 
       it 'returns items for the page provided' do
         get "/user/#{user_id}/feed?page=#{page}"
 
-        expect(json_body).to eq({ activity_feed: expected_user_activity_feed_page_2 })
+        expect(JSON.parse(response.body).each(&:deep_symbolize_keys!)).to eq(expected_user_activity_feed_page_2)
       end
     end
 

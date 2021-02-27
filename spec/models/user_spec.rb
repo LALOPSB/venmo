@@ -120,7 +120,7 @@ RSpec.describe User do
     include_context 'activity feed'
 
     context 'build activity feed' do
-      let(:expected_non_friend_2_activity_feed) { [pay_between_non_friends_title, pay_non_to_friend_title_and_desc] }
+      let(:expected_non_friend_2_activity_feed) { [pay_between_non_friends_feed_item, pay_non_to_friend_feed_item] }
 
       it 'returns the activity feed formatted' do
         expect(non_friend_2.activity_feed).to eq(expected_non_friend_2_activity_feed)

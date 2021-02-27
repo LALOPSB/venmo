@@ -18,10 +18,10 @@ RSpec.describe UserFeedBuilder do
   describe '#execute' do
     let(:expected_user_activity_feed) do
       [
-        pay_between_friends_title_and_desc,
-        pay_non_to_friend_title_and_desc,
-        pay_from_friend_title_and_desc,
-        pay_to_friend_title_and_desc
+        pay_between_friends_feed_item,
+        pay_non_to_friend_feed_item,
+        pay_from_friend_feed_item,
+        pay_to_friend_feed_item
       ]
     end
     let(:user_feed_builder) { described_class.new(user) }
@@ -37,12 +37,12 @@ RSpec.describe UserFeedBuilder do
 
       let(:expected_user_activity_feed_page_1) do
         [
-          pay_between_friends_title_and_desc,
-          pay_non_to_friend_title_and_desc,
-          pay_from_friend_title_and_desc
+          pay_between_friends_feed_item,
+          pay_non_to_friend_feed_item,
+          pay_from_friend_feed_item
         ]
       end
-      let(:expected_user_activity_feed_page_2) { [pay_to_friend_title_and_desc] }
+      let(:expected_user_activity_feed_page_2) { [pay_to_friend_feed_item] }
 
       it 'returns items paginated' do
         expect(described_class.new(user, 1).execute).to eq(expected_user_activity_feed_page_1)

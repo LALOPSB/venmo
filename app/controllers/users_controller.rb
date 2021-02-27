@@ -20,7 +20,7 @@ class UsersController < ApplicationController
   def feed
     feed_items = UserFeedBuilder.new(user, user_params[:page]).execute
 
-    render json: { activity_feed: feed_items }, status: 200
+    render json: feed_items, status: 200
   end
 
   private

@@ -11,7 +11,11 @@ class UserFeedBuilder
 
   def execute
     feed_items_for_user_and_friends.map do |item|
-      "#{item.sender.username} paid #{item.friend.username} on #{item.created_at} - $#{item.amount} - #{item.description}"
+      {
+        title: "#{item.sender.username} paid #{item.friend.username} on #{item.created_at} - #{item.description}",
+        amount: "$#{item.amount}",
+        description: item.description,
+      }
     end
   end
 

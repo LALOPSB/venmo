@@ -24,9 +24,40 @@ RSpec.shared_context 'activity feed' do
 
   let(:friends_activity) { [pay_to_friend, pay_between_friends, pay_non_to_friend, pay_from_friend] }
 
-  let(:pay_between_friends_title_and_desc) { "#{friend_1.username} paid #{friend_2.username} on #{pay_between_friends.created_at} - $15.0 - Payment between friends" }
-  let(:pay_non_to_friend_title_and_desc) { "#{non_friend_1.username} paid #{friend_2.username} on #{pay_non_to_friend.created_at} - $55.0 - Payment from non friend to friend" }
-  let(:pay_from_friend_title_and_desc) { "#{friend_1.username} paid #{user.username} on #{pay_from_friend.created_at} - $108.0 - Payment from friend" }
-  let(:pay_to_friend_title_and_desc) { "#{user.username} paid #{friend_1.username} on #{pay_to_friend.created_at} - $80.0 - Payment to friend" }
-  let(:pay_between_non_friends_title) { "#{non_friend_1.username} paid #{non_friend_2.username} on #{pay_between_non_friends.created_at} - $23.0 - Payment between non friends" }
+  let(:pay_between_friends_feed_item) do
+    {
+      title: "#{friend_1.username} paid #{friend_2.username} on #{pay_between_friends.created_at} - #{pay_between_friends.description}",
+      amount: "$#{pay_between_friends.amount}",
+      description: pay_between_friends.description,
+    }
+  end
+
+  let(:pay_non_to_friend_feed_item) do
+    {
+      title: "#{non_friend_1.username} paid #{friend_2.username} on #{pay_non_to_friend.created_at} - #{pay_non_to_friend.description}",
+      amount: "$#{pay_non_to_friend.amount}",
+      description: pay_non_to_friend.description,
+    }
+  end
+  let(:pay_from_friend_feed_item) do
+    {
+      title: "#{friend_1.username} paid #{user.username} on #{pay_from_friend.created_at} - #{pay_from_friend.description}",
+      amount: "$#{pay_from_friend.amount}",
+      description: pay_from_friend.description,
+    }
+  end
+  let(:pay_to_friend_feed_item) do
+    {
+      title: "#{user.username} paid #{friend_1.username} on #{pay_to_friend.created_at} - #{pay_to_friend.description}",
+      amount: "$#{pay_to_friend.amount}",
+      description: pay_to_friend.description,
+    }
+  end
+  let(:pay_between_non_friends_feed_item) do
+    {
+      title: "#{non_friend_1.username} paid #{non_friend_2.username} on #{pay_between_non_friends.created_at} - #{pay_between_non_friends.description}",
+      amount: "$#{pay_between_non_friends.amount}",
+      description: pay_between_non_friends.description,
+    }
+  end
 end
