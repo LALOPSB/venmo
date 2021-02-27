@@ -6,7 +6,9 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-(1..50).each do
+User.create(username: 'Carlos')
+
+(2..50).each do
   User.create!(username: Faker::Name.first_name)
 end
 
@@ -35,7 +37,6 @@ Friendship.create!(user_id: 1, friend_id: 50)
     )
   end
 end
-
 
 User.all.each do |user|
   user.friends.each do |friend|
